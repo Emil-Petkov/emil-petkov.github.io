@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Intro Scene</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 100vw;
+      max-width: 100vw;
+      height: auto;
+      min-height: 550px;
+      padding: 20px;
+      background-color: black;
+      border-radius: 20px;
+      box-shadow: 0 0 50px rgba(255, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .text-line, .art-line {
+      font-size: 45px;
+      font-weight: bold;
+      font-family: 'Courier New', monospace;
+      color: red;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.3;
+      text-wrap: balance;
+    }
+
+    .art-line {
+      margin-top: 10px;
+    }
+
+    .underline {
+      text-decoration: underline;
+    }
+
+    .no-underline {
+      text-decoration: none;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1.2em;
+      background-color: red;
+      animation: blink 0.7s infinite;
+      vertical-align: bottom;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .text-line, .art-line {
+        font-size: 28px;
+      }
+
+      .overlay-text {
+        width: 95vw;
+        padding: 20px;
+        min-height: 200px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .text-line, .art-line {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <video autoplay loop muted playsinline>
+    <source src="video/intro.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="overlay-text">
+    <div class="text-line" id="line1">
+      <span id="typed1"></span>
+    </div>
+    <div class="art-line" id="line2">
+      <span id="typed2" class="underline"></span><span id="dot" class="no-underline"></span><span id="cursor" class="cursor"></span>
+    </div>
+  </div>
+
+  <script>
+    const fullLine1 = "Defense is predictable. Offense is";
+    const fullLine2 = "Art";
+    const dot = ".";
+
+    const speed = 90;
+    let i = 0, j = 0;
+
+    const typed1 = document.getElementById("typed1");
+    const typed2 = document.getElementById("typed2");
+    const dotEl = document.getElementById("dot");
+    const cursor = document.getElementById("cursor");
+
+    function moveCursorTo(target) {
+      if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
+      target.appendChild(cursor);
+    }
+
+    function typeLine1() {
+      if (i < fullLine1.length) {
+        typed1.textContent += fullLine1.charAt(i);
+        i++;
+        moveCursorTo(typed1);
+        setTimeout(typeLine1, speed);
+      } else {
+        setTimeout(typeLine2, 400);
+      }
+    }
+
+    function typeLine2() {
+      if (j < fullLine2.length) {
+        typed2.textContent += fullLine2.charAt(j);
+        j++;
+        moveCursorTo(typed2);
+        setTimeout(typeLine2, speed);
+      } else {
+        dotEl.textContent = dot;
+        moveCursorTo(dotEl);
+        setTimeout(() => {
+          window.location.href = "main.html";
+        }, 3000);
+      }
+    }
+
+    setTimeout(typeLine1, 1000);
+  </script>
+</body>
+</html>
